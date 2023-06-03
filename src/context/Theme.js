@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../constants/Colors';
 
-const Themes = ['morning', 'afternoon', 'evening'];
+const Themes = ['morning', 'evening'];
 
 const ThemeContext = createContext({
   theme: 'morning',

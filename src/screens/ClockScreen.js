@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
 import { useThemeColors } from '../hooks/useThemeColors';
+import { ThemeContext } from '../context/Theme';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import More from './More';
@@ -15,6 +16,11 @@ const ClockScreen = () => {
   const [dayOfYear, setDayOfYear] = useState(null);
   const [dayOfWeek, setDayOfWeek] = useState(null);
   const [weekNumber, setWeekNumber] = useState(null);
+  const [pressed, setPressed] = useState(false);
+  const [quote, setQuote] = useState({ content: '', author: '' });
+
+  const { colors } = useThemeColors();
+  const { theme, setTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchCurrentTimeAndLocation = async () => {
@@ -27,10 +33,10 @@ const ClockScreen = () => {
 
         const locationResponse = await axios.get(`http://ip-api.com/json/${data.client_ip}`);
         const locationData = locationResponse.data;
-        const location = `${locationData.city}, ${locationData.regionName}, ${locationData.country}`;
+        const location = `${locationData.city}, ` + (`${locationData.region}` || `${locationData.country}`);
 
         setCurrentTime(currentTime);
-        setLocation(location);
+        setLocation(location.toUpperCase());
         setTimezone(timezone);
         setMeridiem(meridiem);
 
@@ -46,15 +52,41 @@ const ClockScreen = () => {
 
         const weekNumber = now.week();
         setWeekNumber(weekNumber);
+
+        if (meridiem === 'AM') {
+          setTheme('morning');
+        } else {
+          setTheme('evening');
+        }
       } catch (error) {
         console.log('Error fetching current time and location:', error);
       }
     };
+
+    const fetchRandomQuote = async () => {
+      try {
+        const response = await axios.get('https://api.quotable.io/random');
+        const { content, author } = response.data;
+        setQuote({ content, author });
+      } catch (error) {
+        console.log('Error fetching random quote:', error);
+      }
+    };
+
     fetchCurrentTimeAndLocation();
     setInterval(fetchCurrentTimeAndLocation, 30000);
+    fetchRandomQuote();
   }, []);
 
-  const { colors } = useThemeColors();
+  const fetchRandomQuote = async () => {
+    try {
+      const response = await axios.get('https://api.quotable.io/random');
+      const { content, author } = response.data;
+      setQuote({ content, author });
+    } catch (error) {
+      console.log('Error fetching random quote:', error);
+    }
+  };
 
   const styles = StyleSheet.create({
     background: {
@@ -69,18 +101,32 @@ const ClockScreen = () => {
     },
   });
 
+  const backgroundImageSource = meridiem === 'AM'
+    ? require('../../assets/bg-image-daytime.jpg')
+    : require('../../assets/bg-image-nighttime.jpg');
+
   return (
-    <ImageBackground
-      source={require('../../assets/bg-image-daytime.jpg')}
-      style={styles.background}
-    >
+    <ImageBackground source={backgroundImageSource} style={styles.background}>
       <View style={styles.overlay} />
       <SafeAreaView style={styles.safeArea}>
-
-        <Clock currentTime={currentTime} location={location} meridiem={meridiem} timezoneAbbreviation={timezoneAbbreviation}/>
-
-        <More timezone={timezone} dayOfYear={dayOfYear} dayOfWeek={dayOfWeek} weekNumber={weekNumber}/>
-
+        <Clock
+          currentTime={currentTime}
+          location={location}
+          meridiem={meridiem}
+          timezoneAbbreviation={timezoneAbbreviation}
+          pressed={pressed}
+          setPressed={setPressed}
+          quote={quote}
+          fetchRandomQuote={fetchRandomQuote}
+        />
+        {pressed === true ? (
+          <More
+            timezone={timezone}
+            dayOfYear={dayOfYear}
+            dayOfWeek={dayOfWeek}
+            weekNumber={weekNumber}
+          />
+        ) : null}
       </SafeAreaView>
     </ImageBackground>
   );

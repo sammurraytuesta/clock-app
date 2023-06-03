@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text, TextBold } from '../components/themed/Text';
 import { useThemeColors } from '../hooks/useThemeColors';
 
 const More = ({timezone, dayOfYear, dayOfWeek, weekNumber}) => {
@@ -20,29 +21,25 @@ const More = ({timezone, dayOfYear, dayOfWeek, weekNumber}) => {
         width: '90%',
         marginVertical: 12,
       },
-      text: {
-        fontSize: 20,
-        color: 'white',
-      },
     });
 
     return (
         <View style={styles.container}>
           <View style={styles.row}>
-            <Text>Current Timezone</Text>
-            <Text style={styles.text}>{timezone}</Text>
+            <Text>CURRENT TIMEZONE</Text>
+            <TextBold>{timezone}</TextBold>
           </View>
           <View style={styles.row}>
-            <Text>Day of the year</Text>
-            <Text style={styles.text}>{dayOfYear}</Text>
+            <Text>DAY OF THE YEAR</Text>
+            <TextBold>{dayOfYear}</TextBold>
           </View>
           <View style={styles.row}>
-            <Text>Day of the week</Text>
-            <Text style={styles.text}>{dayOfWeek}</Text>
+            <Text>DAY OF THE WEEK</Text>
+            <TextBold>{dayOfWeek}</TextBold>
           </View>
           <View style={styles.row}>
-            <Text>Week Number</Text>
-            <Text style={styles.text}>{weekNumber}</Text>
+            <Text>WEEK NUMBER</Text>
+            <TextBold>{weekNumber}</TextBold>
           </View>
         </View>
     );

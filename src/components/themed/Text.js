@@ -1,5 +1,5 @@
 import { Text as DefaultText } from 'react-native';
-import { useThemeColors } from 'hooks/useThemeColors';
+import { useThemeColors } from '../../hooks/useThemeColors';
 
 const Text = ({ style, ...rest }) => {
   const { colors } = useThemeColors();
@@ -7,7 +7,7 @@ const Text = ({ style, ...rest }) => {
   return (
     <DefaultText
       style={[
-        { color: colors.text, fontFamily: 'SpaceMono-Regular', fontSize: 16 },
+        { color: colors.text, fontSize: 10 },
         style,
       ]}
       {...rest}
@@ -21,7 +21,7 @@ const TextBold = ({ style, ...rest }) => {
   return (
     <DefaultText
       style={[
-        { color: colors.text, fontFamily: 'SpaceMono-Bold', fontSize: 16 },
+        { color: colors.text, fontSize: 18, fontWeight: 'bold', },
         style,
       ]}
       {...rest}
@@ -29,5 +29,33 @@ const TextBold = ({ style, ...rest }) => {
   );
 };
 
-export { Text, TextBold };
+const ClockText = ({ style, ...rest }) => {
+  const { colors } = useThemeColors();
+
+  return (
+    <DefaultText
+      style={[
+        { color: colors.textAccent, fontSize: 15, },
+        style,
+      ]}
+      {...rest}
+    />
+  );
+};
+
+const ClockTime = ({ style, ...rest }) => {
+  const { colors } = useThemeColors();
+
+  return (
+    <DefaultText
+      style={[
+        { color: colors.textAccent, fontSize: 90, fontWeight: 'bold', },
+        style,
+      ]}
+      {...rest}
+    />
+  );
+};
+
+export { Text, TextBold, ClockText, ClockTime };
 export default Text;

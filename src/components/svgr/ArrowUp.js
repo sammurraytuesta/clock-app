@@ -1,13 +1,11 @@
 import React from 'react';
-import Svg, { G, Path } from 'react-native-svg';
+import { Svg, Path, Circle, G } from 'react-native-svg';
 
 const ArrowUp = () => (
-  <Svg width="40" height="40">
-    <G fill="none" fillRule="evenodd">
-      <Path fill="#303030" d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 38.333c-9.39 0-17-7.61-17-17s7.61-17 17-17 17 7.61 17 17-7.61 17-17 17z" />
-      <Path stroke="#FFF" strokeWidth="2" d="M14 23l6-6 6 6" />
-    </G>
-  </Svg>
+<Svg width={36} height={36}>
+<Circle cx={18} cy={18} r={18} fill="#303030" />
+<Path stroke="#FFF" strokeWidth={1.8} d="M13.5 20.5l4.5-4.5 4.5 4.5" />
+</Svg>
 );
 
 export default ArrowUp;
